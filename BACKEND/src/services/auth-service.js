@@ -1,5 +1,5 @@
-import { createUser, finduserByEmail, finduserByEmailAndPassword } from "../dao/user-dao.js"
-import { ConflictError } from "../util/errorhandler.js";
+import { createUser, finduserByEmail, finduserByEmailAndPassword } from "../dao/user-dao.js";
+import { ConflictError } from "../util/errorHandler.js";
 import { signToken } from "../util/helper.js";
 
 export const registerUserService = async (name, email, password) => {
