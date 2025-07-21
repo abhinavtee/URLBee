@@ -1,5 +1,5 @@
 import urlSchema from "../models/shortUrlSchema.js";
-import { ConflictError } from "../util/errorhandler.js";
+import { ConflictError } from "../util/errorHandler.js";
 
 export const saveShortUrl = async (shortcode, url, userId) => {
     try {
