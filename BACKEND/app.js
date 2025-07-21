@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 import express from "express";
-import connectDB from "./src/config/mongo.config.js";
-import authRoutes from "./src/routes/auth-routes.js";
-import userRoutes from "./src/routes/user-routes.js";
-import shortUrl from "./src/routes/short-url-route.js";
-import { redirectFromShortUrl } from "./src/controller/short-url-controller.js";
-import { errorHandler } from "./src/util/errorhandler.js";
+import connectDB from "./src/config/mongoConfig.js";
+import authRoutes from "./src/routes/authRoutes.js";
+import userRoutes from "./src/routes/userRoutes.js";
+import shortUrl from "./src/routes/shortUrlRoute.js";
+import { redirectFromShortUrl } from "./src/controller/shortUrlController.js";
+import { errorHandler } from "./src/util/errorHandler.js";
 import cors from "cors";
 import { attachUser } from "./src/util/attachUser.js";
 import cookieParser from "cookie-parser";
