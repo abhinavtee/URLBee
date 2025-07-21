@@ -1,16 +1,12 @@
 {
-  "name": "backend",
+  "name": "urlbee-backend",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "BACKEND/app.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node BACKEND/app.js",
+    "dev": "nodemon BACKEND/app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
@@ -19,7 +15,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.2",
-    "nanoid": "^5.1.5",
-    "nodemon": "^3.1.10"
+    "nanoid": "^5.1.5"
   }
 }
+
