@@ -11,6 +11,12 @@ import { attachUser } from "./src/util/attachUser.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
+console.log("🔍 Environment Variables Debug:");
+console.log("MONGO_URI:", process.env.MONGO_URI ? "✅ Found" : "❌ Missing");
+console.log("JWT_SECRET:", process.env.JWT_SECRET ? "✅ Found" : "❌ Missing");
+console.log("PORT:", process.env.PORT);
+console.log("NODE_ENV:", process.env.NODE_ENV);
+
 const app = express();
 
 app.use(cors({
