@@ -9,22 +9,14 @@ export const checkAuth = async ({ context }) => {
         // Check current auth state first
         const currentAuthState = store.getState().auth;
         if (!currentAuthState.isAuthenticated) {
+            console.log('Not authenticated in store');
             throw new Error("Not authenticated");
         }
         
-        const user = await queryClient.ensureQueryData({
-            queryKey: ["currentUser"],
-            queryFn: get_CurrentUser,
-        });
-        
-        if(!user) {
-            throw new Error("No user found");
-        }
-        
-        store.dispatch(login(user));
+        console.log('Auth check passed - user in store:', currentAuthState.user);
         return true;
-    }
-    catch (error) {
+        
+    } catch (error) {
         console.log('Auth check failed:', error);
         return redirect({ to: "/auth" });  
     }

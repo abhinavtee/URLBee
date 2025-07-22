@@ -6,15 +6,15 @@ const UserUrl = () => {
   const { data: urls, isLoading, isError, error } = useQuery({
     queryKey: ['userUrls'],
     queryFn: getAllUserUrls,
-    refetchInterval: 30000, // Refetch every 30 seconds to update click counts
-    staleTime: 0, // Consider data stale immediately so it refetches when invalidated
+    refetchInterval: 30000,
+    staleTime: 0,
   })
   const [copiedId, setCopiedId] = useState(null)
   const handleCopy = (url, id) => {
     navigator.clipboard.writeText(url)
     setCopiedId(id)
     
-    // Reset the copied state after 2 seconds
+    // Resat the copied state after 2 seconds
     setTimeout(() => {
       setCopiedId(null)
     }, 2000)
@@ -31,7 +31,7 @@ const UserUrl = () => {
   if (isError) {
     return (
       <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl my-4">
-        Error loading your URLs: {error.message}
+        Error loading your URLs: {error?.message || 'Something went wrong'}
       </div>
     )
   }
@@ -47,6 +47,11 @@ const UserUrl = () => {
       </div>
     )
   }
+
+
+  const baseURL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '192.168.29.30' 
+    ? 'http://localhost:5000' 
+    : 'https://urlbee-production.up.railway.app';
 
   return (
     <div className="space-y-4">
@@ -66,12 +71,12 @@ const UserUrl = () => {
             <div className="mb-3">
               <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Short URL</p>
               <a 
-                href={`http://localhost:5000/${url.short_url}`} 
+                href={`${baseURL}/${url.short_url}`} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-sm text-blue-600 hover:text-blue-800 hover:underline break-all"
               >
-                localhost:5000/{url.short_url}
+                {baseURL}/{url.short_url}
               </a>
             </div>
 
@@ -87,7 +92,7 @@ const UserUrl = () => {
               </div>
               
               <button
-                onClick={() => handleCopy(`http://localhost:5000/${url.short_url}`, url._id)}
+                onClick={() => handleCopy(`${baseURL}/${url.short_url}`, url._id)}
                 className={`inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded-lg shadow-sm transition-all duration-200 ${
                   copiedId === url._id
                     ? 'bg-green-600 text-white hover:bg-green-700'
@@ -146,12 +151,12 @@ const UserUrl = () => {
                   <td className="px-6 py-4">
                     <div className="text-sm">
                       <a 
-                        href={`http://localhost:5000/${url.short_url}`} 
+                        href={`${baseURL}/${url.short_url}`} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-900 hover:underline"
                       >
-                        localhost:5000/{url.short_url}
+                        {baseURL}/{url.short_url}
                       </a>
                     </div>
                   </td>
@@ -162,7 +167,7 @@ const UserUrl = () => {
                   </td>
                   <td className="px-6 py-4">
                     <button
-                      onClick={() => handleCopy(`http://localhost:5000/${url.short_url}`, url._id)}
+                      onClick={() => handleCopy(`${baseURL}/${url.short_url}`, url._id)}
                       className={`inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm transition-colors duration-200 ${
                         copiedId === url._id
                           ? 'bg-green-600 text-white hover:bg-green-700'

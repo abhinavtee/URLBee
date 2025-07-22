@@ -21,7 +21,8 @@ const UrlForm = () => {
       queryClient.invalidateQueries({ queryKey: ['userUrls'] });
       setError(null);
     } catch (err) {
-      setError(err);
+      console.error('API Error:', err);
+      setError(err.message || 'Something went wrong');
     }
   }
 

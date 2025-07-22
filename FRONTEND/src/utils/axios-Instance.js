@@ -2,18 +2,8 @@ import axios from "axios"
 
 // Auto-detect the correct backend URL
 const getBaseURL = () => {
-    const hostname = window.location.hostname;
-    
-    // If accessing from mobile/IP address
-    if (hostname === '192.168.29.30') {
-        return 'http://192.168.29.30:5000';
-    }
-    // If accessing from PC/localhost
-    else if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        return 'http://localhost:5000';
-    }
-    // Default fallback
-    return 'http://192.168.29.30:5000';
+    return 'https://urlbee-production.up.railway.app';
+   
 };
 
 const axiosInstance = axios.create({

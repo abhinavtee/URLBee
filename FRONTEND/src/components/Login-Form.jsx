@@ -21,7 +21,12 @@ const LoginForm = ({state}) => {
         try {
             const {user} = await loginUser(email, password);
             dispatch(login(user));
-            navigate({to:"/dashboard"});
+            
+            // Add a small delay to ensure Redux state updates
+            setTimeout(() => {
+                navigate({to:"/dashboard"});
+            }, 100);
+            
             setIsLoading(false);
             console.log("Login successful");    
         } catch (err) {
