@@ -26,10 +26,12 @@ app.use(cors({
         "http://192.168.29.30:5173",
         "http://localhost:5000",
         "http://192.168.29.30:5000",
+        "https://urlbee-production.up.railway.app" // Railway URL for production
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    optionsSuccessStatus: 200 // For legacy browser support
 }));
 
 app.use(express.json());
