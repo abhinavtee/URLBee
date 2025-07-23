@@ -10,9 +10,7 @@ const LoginForm = ({state}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const auth = useSelector((state)=> state.auth);
     const dispatch = useDispatch();
-    console.log(auth)
 
     const handleSubmit = async () => {
         setIsLoading(true);
@@ -27,8 +25,7 @@ const LoginForm = ({state}) => {
                 navigate({to:"/dashboard"});
             }, 100);
             
-            setIsLoading(false);
-            console.log("Login successful");    
+            setIsLoading(false); 
         } catch (err) {
             setError(err.message || 'Login failed');
             setIsLoading(false);

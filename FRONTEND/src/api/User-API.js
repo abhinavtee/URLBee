@@ -3,7 +3,6 @@ import axiosInstance from "../utils/axios-Instance";
 export const registerUser = async (name, email, password) => {
     try {
         const response = await axiosInstance.post("/auth/register", { name, email, password });
-        console.log('Register API raw response:', response.data);
         return response.data; 
     } catch (error) {
         console.error('Register API error:', error);
@@ -14,7 +13,6 @@ export const registerUser = async (name, email, password) => {
 export const loginUser = async (email, password) => {
     try {
         const response = await axiosInstance.post("/auth/login", { email, password });
-        console.log('Login API raw response:', response.data);
         return response.data; 
     } catch (error) {
         console.error('Login API error:', error);
@@ -35,7 +33,6 @@ export const logoutUser = async () => {
 export const get_CurrentUser = async () => {
     try {
         const response = await axiosInstance.get("/auth/me");
-        console.log('Current user API response:', response.data);
         return response.data; 
     } catch (error) {
         console.error('Get current user API error:', error);
@@ -49,6 +46,9 @@ export const getAllUserUrls = async () => {
         return response.data;
     } catch (error) {
         console.error('Get user URLs API error:', error);
+        if (error.response?.status === 401) {
+            console.error('Authentication failed - user may need to login again');
+        }
         throw error;
     }
 }

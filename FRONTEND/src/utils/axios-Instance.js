@@ -1,15 +1,13 @@
 import axios from "axios"
 
-// Auto-detect the correct backend URL
 const getBaseURL = () => {
-    return 'https://urlbee-production.up.railway.app';
-   
+    return import.meta.env.VITE_API_URL || 'https://urlbee-production.up.railway.app';
 };
 
 const axiosInstance = axios.create({
     baseURL: getBaseURL(),
-    timeout: 30000, //30s timeout for requests
-    withCredentials: true
+    timeout: 30000,
+    withCredentials: true 
 })
 
 console.log('🌐 API Base URL:', axiosInstance.defaults.baseURL);

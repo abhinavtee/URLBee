@@ -1,12 +1,35 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAllUserUrls } from '../api/User-API.js';
+import { deleteShortUrl } from '../api/ShortUrl-API.js';
+import { useSelector } from 'react-redux';
 
 const UserUrl = () => {
+  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const queryClient = useQueryClient();
+  
+  const deleteMutation = useMutation({
+    mutationFn: deleteShortUrl,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userUrls'] });
+    },
+    onError: (error) => {
+      console.error('Delete failed:', error);
+    }
+  });
+
+  const handleDelete = (urlId) => {
+    if (confirm('Are you sure you want to delete this URL?')) {
+      deleteMutation.mutate(urlId);
+    }
+  };
+
   const { data: urls, isLoading, isError, error } = useQuery({
     queryKey: ['userUrls'],
     queryFn: getAllUserUrls,
-    refetchInterval: 30000,
+    enabled: isAuthenticated,
+    retry: false, // Stop retrying failed requests
+    refetchInterval: false, // Stop auto-refetch
     staleTime: 0,
   })
   const [copiedId, setCopiedId] = useState(null)
@@ -49,9 +72,7 @@ const UserUrl = () => {
   }
 
 
-  const baseURL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '192.168.29.30' 
-    ? 'http://localhost:5000' 
-    : 'https://urlbee-production.up.railway.app';
+  const baseURL = 'https://urlbee-production.up.railway.app';
 
   return (
     <div className="space-y-4">
@@ -91,30 +112,42 @@ const UserUrl = () => {
                 </div>
               </div>
               
-              <button
-                onClick={() => handleCopy(`${baseURL}/${url.short_url}`, url._id)}
-                className={`inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded-lg shadow-sm transition-all duration-200 ${
-                  copiedId === url._id
-                    ? 'bg-green-600 text-white hover:bg-green-700'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}
-              >
-                {copiedId === url._id ? (
-                  <>
-                    <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                    </svg>
-                    Copy
-                  </>
-                )}
-              </button>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => handleCopy(`${baseURL}/${url.short_url}`, url._id)}
+                  className={`inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded-lg shadow-sm transition-all duration-200 ${
+                    copiedId === url._id
+                      ? 'bg-green-600 text-white hover:bg-green-700'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {copiedId === url._id ? (
+                    <>
+                      <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                      </svg>
+                      Copy
+                    </>
+                  )}
+                </button>
+                
+                <button
+                  onClick={() => handleDelete(url._id)}
+                  disabled={deleteMutation.isPending}
+                  className="inline-flex items-center px-3 py-2 border border-transparent text-xs font-medium rounded-lg shadow-sm bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400 transition-all duration-200"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -166,30 +199,42 @@ const UserUrl = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button
-                      onClick={() => handleCopy(`${baseURL}/${url.short_url}`, url._id)}
-                      className={`inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm transition-colors duration-200 ${
-                        copiedId === url._id
-                          ? 'bg-green-600 text-white hover:bg-green-700'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
-                      }`}
-                    >
-                      {copiedId === url._id ? (
-                        <>
-                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                          </svg>
-                          Copied!
-                        </>
-                      ) : (
-                        <>
-                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
-                          </svg>
-                          Copy URL
-                        </>
-                      )}
-                    </button>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleCopy(`${baseURL}/${url.short_url}`, url._id)}
+                        className={`inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm transition-colors duration-200 ${
+                          copiedId === url._id
+                            ? 'bg-green-600 text-white hover:bg-green-700'
+                            : 'bg-blue-600 text-white hover:bg-blue-700'
+                        }`}
+                      >
+                        {copiedId === url._id ? (
+                          <>
+                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                            </svg>
+                            Copy URL
+                          </>
+                        )}
+                      </button>
+                      
+                      <button
+                        onClick={() => handleDelete(url._id)}
+                        disabled={deleteMutation.isPending}
+                        className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md shadow-sm bg-red-600 text-white hover:bg-red-700 disabled:bg-red-400 transition-all duration-200"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
