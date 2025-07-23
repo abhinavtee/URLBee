@@ -63,7 +63,7 @@ const Homepage = () => {
                                     playsInline
                                     className="w-full h-auto rounded-xl lg:rounded-2xl shadow-lg lg:shadow-2xl"
                                 >
-                                    <source src="/src/assets/urlbee.mp4" type="video/mp4" />
+                                    <source src="/urlbee.mp4" type="video/mp4" />
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
