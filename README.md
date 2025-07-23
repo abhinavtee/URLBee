@@ -2,7 +2,7 @@
 
 A modern, full-stack URL shortener built with React and Node.js. Create short, memorable links and track their performance with detailed analytics.
 
-![URLBee Demo] https://github.com/abhinavtee/URLBee
+![URLBee Demo] [https://github.com/abhinavtee/URLBee](https://url-bee-abhinav-tripathis-projects-e66b0883.vercel.app/about)
 
 ## ✨ Features
 
@@ -31,11 +31,6 @@ A modern, full-stack URL shortener built with React and Node.js. Create short, m
 - **JWT** - Authentication
 - **bcrypt** - Password hashing
 - **CORS** - Cross-origin resource sharing
-
-## 🚀 Live Demo
-
-- **Frontend**: [https://urlbee.vercel.app](https://urlbee.vercel.app)
-- **Backend API**: [https://urlbee-production.up.railway.app](https://urlbee-production.up.railway.app)
 
 ## 📦 Installation
 
@@ -158,26 +153,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
-
+**Abhinav Tripathi*
+- GitHub: [Abhinavtee]([https://github.com/abhinavtee])
+- LinkedIn: [Abhinavte](https://www.linkedin.com/in/abhinavte/)
+- Email: abhi9651.at@outlook.com
+  
 ## 🙏 Acknowledgments
 
-- Thanks to all contributors
 - Inspired by bit.ly and tinyurl
 - Built with ❤️ and lots of ☕
-
-## 📈 Roadmap
-
-- [ ] QR Code generation
-- [ ] Custom domains
-- [ ] Advanced analytics
-- [ ] Bulk URL creation
-- [ ] API rate limiting
-- [ ] URL expiration
-- [ ] Password protection
 
 ---
 
