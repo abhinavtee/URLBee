@@ -44,6 +44,6 @@ export const createCustomShortUrl = wrapAsync(async (req, res) => {
 
 export const deleteShortUrl = wrapAsync(async (req, res) => {
     const { id } = req.params;
-    await deleteShortUrl(id, req.user._id);
+    await deleteShortUrlService(id, req.user._id);
     res.status(200).json({ message: "URL deleted successfully" });
 }); 
