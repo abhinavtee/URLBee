@@ -1,6 +1,7 @@
 import { findUrlfromShortUrl } from "../dao/short-url-dao.js";
-import { createShortUrlWithoutUserService, createShortUrlWithUserService } from "../services/short-url-service.js";
+import { createShortUrlWithoutUserService, createShortUrlWithUserService, deleteShortUrlService } from "../services/short-url-service.js";
 import { wrapAsync } from "../util/tryCatchWrapper.js";
+
 
 export const createShortUrl = wrapAsync(async (req, res) => {
 
@@ -39,4 +40,10 @@ export const createCustomShortUrl = wrapAsync(async (req, res) => {
     const shortUrl = await createShortUrlWithUserService(url, userId, customShortUrl);
     res.status(200).json({ shortUrl: process.env.APP_URL + shortUrl });
 
+});
+
+export const deleteShortUrl = wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    await deleteShortUrl(id, req.user._id);
+    res.status(200).json({ message: "URL deleted successfully" });
 }); 

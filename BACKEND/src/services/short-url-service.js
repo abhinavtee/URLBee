@@ -1,5 +1,6 @@
-import { getCustomShortUrl, saveShortUrl } from "../dao/short-url-dao.js";
+import { getCustomShortUrl, saveShortUrl, deleteShortUrl } from "../dao/short-url-dao.js";
 import { generateNanoId } from "../util/helper.js";
+
 
 export const createShortUrlWithoutUserService = async (url) => {
     const shortcode = generateNanoId(7);
@@ -20,4 +21,12 @@ export const createShortUrlWithUserService = async (url, userId, customShortUrl=
     
     await saveShortUrl(shortcode, url, userId)
     return shortcode;
+}
+
+export const deleteShortUrlService = async (shortUrlId, userId) => {
+    const deletedUrl = await deleteShortUrl(shortUrlId, userId);
+    if (!deletedUrl) {
+        throw new Error("URL not found or unauthorized");
+    }
+    return deletedUrl;
 }
