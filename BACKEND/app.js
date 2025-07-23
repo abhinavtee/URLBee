@@ -11,11 +11,6 @@ import { attachUser } from "./src/util/attachUser.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
-console.log("🔍 Environment Variables Debug:");
-console.log("MONGO_URI:", process.env.MONGO_URI ? "✅ Found" : "❌ Missing");
-console.log("JWT_SECRET:", process.env.JWT_SECRET ? "✅ Found" : "❌ Missing");
-console.log("PORT:", process.env.PORT);
-console.log("NODE_ENV:", process.env.NODE_ENV);
 
 const app = express();
 
@@ -26,7 +21,8 @@ app.use(cors({
         "http://192.168.29.30:5173",
         "http://localhost:5000",
         "http://192.168.29.30:5000",
-        "https://urlbee-production.up.railway.app"
+        "https://urlbee-production.up.railway.app",
+        "https://url-bee-abhinav-tripathis-projects-e66b0883.vercel.app"
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -48,5 +44,4 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
     connectDB();
-    console.log(`🚀 Server is Started at PORT - ${PORT}`);
 });
