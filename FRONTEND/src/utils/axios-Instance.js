@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const getBaseURL = () => {
-    return import.meta.env.VITE_API_URL || 'https://urlbee-production.up.railway.app';
+    return import.meta.env.VITE_API_URL || 'https://url-bee-backend.vercel.app/';
 };
 
 const axiosInstance = axios.create({
