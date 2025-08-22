@@ -14,9 +14,10 @@ dotenv.config();
 
 const app = express();
 const allowedOrigins = [
-  "http://localhost:3000", // local dev
-  "http://localhost:5173", // Vite
-  "https://url-bee.vercel.app", // ✅ no trailing slash
+  "http://localhost:3000", // dev
+  "http://localhost:5173", // vite dev
+  "https://url-bee.vercel.app", // frontend prod
+  "https://url-h5fyq2kqb-abhinav-tripathis-projects-e66b0883.vercel.app", // backend prod
 ];
 
 app.use(
