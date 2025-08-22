@@ -13,22 +13,24 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
+const allowedOrigins = [
+  "http://localhost:3000", // local dev
+  "http://localhost:5173", // if using Vite
+  "https://url-bee.vercel.app/", // your frontend live
+];
 
-app.use(cors({
-    origin: [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://192.168.29.30:5173",
-        "http://localhost:5000",
-        "http://192.168.29.30:5000",
-        "https://urlbee-production.up.railway.app",
-        "https://url-bee-abhinav-tripathis-projects-e66b0883.vercel.app"
-    ],
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
-    optionsSuccessStatus: 200
-}));
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -42,6 +44,6 @@ app.get("/:id", redirectFromShortUrl);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
-    connectDB();
+app.listen(PORT, "0.0.0.0", () => {
+  connectDB();
 });
