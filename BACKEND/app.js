@@ -15,8 +15,8 @@ dotenv.config();
 const app = express();
 const allowedOrigins = [
   "http://localhost:3000", // local dev
-  "http://localhost:5173", // if using Vite
-  "https://url-bee.vercel.app/", // your frontend live
+  "http://localhost:5173", // Vite
+  "https://url-bee.vercel.app", // ✅ no trailing slash
 ];
 
 app.use(
@@ -32,6 +32,7 @@ app.use(
   })
 );
 
+app.options("*", cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
