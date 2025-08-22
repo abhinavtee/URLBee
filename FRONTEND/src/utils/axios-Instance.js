@@ -1,11 +1,9 @@
 import axios from "axios"
 
-const getBaseURL = () => {
-    return 'https://url-bee-backend.vercel.app';
-};
+const API_URL = import.meta.env.VITE_API_URL;
 
 const axiosInstance = axios.create({
-    baseURL: getBaseURL(),
+    baseURL: API_URL,
     timeout: 30000,
     withCredentials: true 
 })
