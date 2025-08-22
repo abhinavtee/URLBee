@@ -14,18 +14,29 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://192.168.29.30:5173",
+    "http://localhost:5000",
+    "http://192.168.29.30:5000",
+    "https://url-bee-frontend.vercel.app"
+];
+
 app.use(cors({
-    origin: [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://192.168.29.30:5173",
-        "http://localhost:5000",
-        "http://192.168.29.30:5000",
-        "https://url-bee-frontend.vercel.app"
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    origin: function (origin, callback) {
+        // allow requests like curl or mobile apps with no origin
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("CORS not allowed"));
+        }
+    },
+    credentials: true, // must be true if using withCredentials
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
     optionsSuccessStatus: 200
 }));
 
