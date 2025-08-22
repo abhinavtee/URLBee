@@ -72,7 +72,7 @@ const UserUrl = () => {
   }
 
 
-  const baseURL = 'https://urlbee-production.up.railway.app';
+  const baseURL = import.meta.env.VITE_APP_URL;
 
   return (
     <div className="space-y-4">
