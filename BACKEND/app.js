@@ -23,21 +23,18 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like curl or mobile apps)
       if (!origin) return callback(null, true);
-
-      // Allow any Vercel preview deployment for your frontend
       if (origin.endsWith(".vercel.app") || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: "*",
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie", "X-Requested-With"],
   })
 );
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
