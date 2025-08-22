@@ -21,6 +21,7 @@ app.use(cors({
         "http://192.168.29.30:5173",
         "http://localhost:5000",
         "http://192.168.29.30:5000",
+        "https://url-bee-frontend.vercel.app"
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
