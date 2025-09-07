@@ -6,7 +6,8 @@ import {
 } from "../services/short-url-service.js";
 import { wrapAsync } from "../util/tryCatchWrapper.js";
 
-const baseUrl = process.env.APP_URL.replace(/\/$/, ""); // normalize once
+const baseUrl = (process.env.APP_URL || "http://localhost:5000").replace(/\/$/, "");
+
 
 export const createShortUrl = wrapAsync(async (req, res) => {
   const data = req.body;

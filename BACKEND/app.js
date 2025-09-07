@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import connectDB from "./src/config/mongo.config.js";
 import authRoutes from "./src/routes/auth-routes.js";
@@ -9,8 +10,6 @@ import { errorHandler } from "./src/util/errorHandler.js";
 import cors from "cors";
 import { attachUser } from "./src/util/attachUser.js";
 import cookieParser from "cookie-parser";
-
-dotenv.config();
 
 const app = express();
 
@@ -31,9 +30,16 @@ app.use(
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "Cookie", "X-Requested-With"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cookie",
+      "X-Requested-With",
+      "Accept",
+    ],
   })
 );
+
 
 
 app.use(express.json());
@@ -48,4 +54,7 @@ app.get("/:id", redirectFromShortUrl);
 app.use(errorHandler);
 
 connectDB();
-export default app;
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
